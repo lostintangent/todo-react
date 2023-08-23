@@ -1,7 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 
+interface Todo {
+  id: string;
+  name: string;
+  completed: boolean;
+  toggleTaskCompleted: (id: string) => void;
+  deleteTask: (id: string) => void;
+  editTask: (id: string, newName: string) => void;
+}
 
-function usePrevious(value) {
+function usePrevious(value: any) {
   const ref = useRef();
   useEffect(() => {
     ref.current = value;
@@ -9,20 +17,20 @@ function usePrevious(value) {
   return ref.current;
 }
 
-export default function Todo(props) {
+export default function Todo(props: Todo) {
   const [isEditing, setEditing] = useState(false);
   const [newName, setNewName] = useState('');
 
-  const editFieldRef = useRef(null);
-  const editButtonRef = useRef(null);
+  const editFieldRef = useRef<HTMLInputElement>(null);
+  const editButtonRef = useRef<HTMLButtonElement>(null);
 
   const wasEditing = usePrevious(isEditing);
 
-  function handleChange(e) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setNewName(e.target.value);
   }
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!newName.trim()) {
       return;
@@ -101,10 +109,10 @@ export default function Todo(props) {
 
   useEffect(() => {
     if (!wasEditing && isEditing) {
-      editFieldRef.current.focus();
+      editFieldRef.current?.focus();
     }
     if (wasEditing && !isEditing) {
-      editButtonRef.current.focus();
+      editButtonRef.current?.focus();
     }
   }, [wasEditing, isEditing]);
 

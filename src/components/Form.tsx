@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 
-function Form(props) {
+interface Form {
+  addTask: (name: string) => void;
+}
+
+function Form(props: Form) {
   const [name, setName] = useState('');
 
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!name.trim()) {
       return;
@@ -14,7 +18,7 @@ function Form(props) {
   }
 
 
-  function handleChange(e) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setName(e.target.value);
   }
 
